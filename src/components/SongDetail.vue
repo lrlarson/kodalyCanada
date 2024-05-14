@@ -41,7 +41,7 @@
 			<ckeditor :editor="editor" v-model="songObject.PUBLICATION" :config="editorConfig"></ckeditor>
 			<v-text-field disabled label="General Comments"></v-text-field>
 			<ckeditor :editor="editor" v-model="songObject.COMMENTS" :config="editorConfig"></ckeditor>
-			<v-text-field disabled label="Song Backgroound"></v-text-field>
+			<v-text-field disabled label="Song Background"></v-text-field>
 			<ckeditor :editor="editor" v-model="songObject.SONG_BACKGROUND" :config="editorConfig"></ckeditor>
 		</v-col>
 	</v-row>
@@ -76,7 +76,7 @@
 				
 				<v-tab style="font-size: x-small" ripple key="1" >Analysis</v-tab>
 				<v-tab style="font-size: x-small" ripple key="2" >Rhythms</v-tab>
-				<v-tab style="font-size: x-small" ripple key="9" >Region/Prov.</v-tab>
+				<v-tab style="font-size: x-small" ripple key="9" @click="regionClick" >Region/Prov.</v-tab>
 				<v-tab style="font-size: x-small" ripple key="10" >Communities</v-tab>
 				<v-tab style="font-size: x-small" ripple key="3" @click="pedagogyClick" >Mel. Element</v-tab>
 				<v-tab style="font-size: x-small" ripple key="4" @click="rhythmClick" >Rhythms</v-tab>
@@ -132,25 +132,26 @@
 						></v-select>
 					</v-col>
 					<v-col md3 style="margin-left: 10px;">
-						<v-select
-								v-model="songObject.FORMTYPEID"
-								label="Form Type"
-								:items="formTypesArray"
-								item-text="LABEL"
-								item-value="DATA"
-				
-						></v-select>
-					</v-col>
-				</v-layout>
-				<v-layout row>
-					<v-col md3 style="margin-left: 10px;">
+		
 						<v-select
 								v-model="songObject.METERID"
 								label="Meter"
 								:items="metersArray"
 								item-text="LABEL"
 								item-value="DATA"
-					
+						
+						></v-select>
+					</v-col>
+				</v-layout>
+				<v-layout row>
+					<v-col md3 style="margin-left: 10px;">
+						<v-select
+								v-model="songObject.FORMTYPEID"
+								label="Form Type"
+								:items="formTypesArray"
+								item-text="LABEL"
+								item-value="DATA"
+						
 						></v-select>
 					</v-col>
 					<v-col md3 style="margin-left: 10px;">
@@ -333,6 +334,48 @@
 					<v-layout>
 						<v-row class="justify-center" >
 							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="green" @click="saveRythmicEdits">Save Rhythmic Edits</v-btn>
+						</v-row>
+					</v-layout>
+				</v-tab-item>
+				<v-tab-item key="9">
+					<v-layout row>
+						<v-col md6 style="margin-left: 10px;">
+							<v-select
+									v-model="songObject.REGIONID"
+									label="Region"
+									:items="regionsArray"
+									item-text="LABEL"
+									item-value="DATA"
+							></v-select>
+							<v-select
+									v-model="provinceID"
+									label="Select Provinces"
+									:items="statesArray"
+									item-text="LABEL"
+									item-value="DATA"
+							></v-select>
+						</v-col>
+						<v-col md6 style="margin-left: 10px;">
+							<v-simple-table >
+								<template v-slot:default>
+									<thead style="font-style: italic;">
+										PROVINCES - Click to Delete Province
+									</thead>
+									<tbody>
+										<tr v-for="item in provincesForTitleArray" v-bind:key="item.ID" @click="handleProvinceTableClick(item.ID)">
+											{{item.STATE}}
+										</tr>
+									</tbody>
+									
+								</template>
+							</v-simple-table>
+						
+						</v-col>
+					</v-layout>
+					<v-layout>
+						<v-row class="justify-center" >
+							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="blue" @click="saveRegion" >Save Region</v-btn>
+							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;margin-left: 10px;"  v-if="editMode" color="green" @click="saveProvinceForTitle" >Add Province</v-btn>
 						</v-row>
 					</v-layout>
 				</v-tab-item>
@@ -1036,11 +1079,66 @@ export default {
 		text:'',
 		timeout: 1000,
 		generalCommunitiesArray:[],
+		provinceID:0,
+		provincesForTitleArray:[],
 		
 		
 		
 	}),
 	methods:{
+		handleProvinceTableClick(id){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=deleteStateForTitle&id=' + id)
+				.then(response => {
+					console.log(response);
+					vm.text = 'Province Deleted from Song';
+					vm.snackbar = true;
+					vm.regionClick();
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		},
+		
+		regionClick(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getStatesForTitle&songID=' + vm.songID)
+				.then(response => {
+					vm.provincesForTitleArray = response.data.results;
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		},
+		
+		saveRegion(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=saveRegionForTitle&songID=' + vm.songID + '&regionID=' + vm.songObject.REGIONID)
+				.then(response => {
+					console.log(response);
+					vm.text = 'Region Saved';
+					vm.snackbar = true;
+					vm.regionClick();
+				})
+				.catch(error => {
+					console.log(error);
+				});
+			
+		},
+		
+		saveProvinceForTitle(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=saveStateForTitle&songID=' + vm.songID + '&stateID=' + vm.provinceID)
+				.then(response => {
+					console.log(response);
+					vm.text = 'Province Saved';
+					vm.snackbar = true;
+					vm.regionClick();
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		},
 		
 		saveNewSong(){
 			let vm = this;

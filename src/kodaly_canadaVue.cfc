@@ -62,7 +62,30 @@ order by Title
     select tbl_Title_State.id, Q.State from tbl_Title_State inner join State_Table Q on tbl_Title_State.state = Q.State_ID
     where tbl_Title_State.song_ID = #songID#
   </cfquery>
-<cfreturn queryName>
+      <cfset arrGirls = QueryToStruct(queryName)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>
+</cffunction>
+
+<cffunction name="saveRegionForTitle" access="remote" returntype="Any" returnformat="JSON">
+<cfargument name="songID" type="numeric"  required="true">
+<cfargument name="regionID" type="numeric" required="true">
+<cfquery name="queryName" datasource="kodaly_canada">
+       update tbl_Titles
+        set regionID = #regionID#
+        where ID = #songID#
+</cfquery>
+<cfreturn 1>
+ </cffunction>   
+
+<cffunction name="deleteStateForTitle" access="remote" returntype="Any" returnformat="JSON">
+    <cfargument name="id" type="numeric" required="true" >
+    <cfquery name="queryName" datasource="kodaly_canada">
+        delete from tbl_Title_State
+            where id = #id#
+    </cfquery>
+    <cfreturn 1>
 </cffunction>
 
 <cffunction name="saveStateForTitle" access="remote" returntype="Any" returnformat="JSON">
@@ -295,14 +318,17 @@ order by Title
 		<cfreturn titles>
 	</cffunction>
 
-	<cffunction name="getSongDetails" access="remote" returntype="any">
-    <cfargument name="ID" type="numeric" required="yes">
+	<cffunction name="getSongDetails" access="remote" returntype="any" returnformat="JSON">
+    <cfargument name="songID" type="numeric" required="yes">
     <cfquery name="songDetails" datasource="kodaly_canada">
    SELECT *
   FROM [tbl_Titles]
-  WHERE ID = #id#
+  WHERE ID = #songID#
     </cfquery>  
-    <cfreturn songDetails>  
+    <cfset arrGirls = QueryToStruct(songDetails)/>
+       <cfset objectWrapper = structNew()>
+       <cfset objectWrapper.results = #arrGirls#>
+       <cfreturn objectWrapper>
     </cffunction>
 
 	<cffunction name="getStates" access="remote" returntype="any" returnformat="JSON">
@@ -920,6 +946,94 @@ Select 1
 </cfquery>
 <cfreturn deleteSubject>
 </cffunction>
+
+
+<cffunction name="updateSongBasic" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="SongDetails" type="any">
+        <cfset SongDetails = DeserializeJSON(SongDetails)>
+        <cfif #SongDetails.ANALYZED# eq "true" || #SongDetails.ANALYZED# eq 1>
+            <cfset SongDetails.ANALYZED = 1>
+            <cfelse>
+            <cfset #SongDetails.ANALYZED#= 0>
+            </cfif>
+            <cfif #SongDetails.INFINALE# eq "true" || #SongDetails.INFINALE# eq 1>
+            <cfset #SongDetails.INFINALE# = 1>
+            <cfelse>
+            <cfset #SongDetails.INFINALE#  = 0>
+            </cfif>
+            <cfif #SongDetails.PROOFED_FLAG# eq "true" || SongDetails.PROOFED_FLAG eq 1>
+            <cfset SongDetails.PROOFED_FLAG = 1>
+            <cfelse>
+            <cfset SongDetails.PROOFED_FLAG = 0>
+            </cfif>
+            <cfif #SongDetails.IP_STATUS# eq "true" || #SongDetails.IP_STATUS# eq 1>
+            <cfset SongDetails.IP_STATUS = 1>
+            <cfelse>
+            <cfset SongDetails.IP_STATUS = 0>
+            </cfif>
+            <cfif #SongDetails.LOC# eq "true" || #SongDetails.LOC#  eq 1>
+            <cfset SongDetails.LOC = 1>
+            <cfelse>
+            <cfset SongDetails.LOC = 0>
+            </cfif>
+            <cfif #SongDetails.CHILD# eq "true" || #SongDetails.CHILD# eq 1>
+            <cfset SongDetails.CHILD = 1>
+            <cfelse>
+            <cfset SongDetails.CHILD = 0>
+            </cfif>
+            <cfif #SongDetails.IP_STATUS# eq "true" || #SongDetails.IP_STATUS#  eq 1>
+                <cfset SongDetails.IP_STATUS= 1>
+                <cfelse>
+                <cfset SongDetails.IP_STATUS = 0>
+                </cfif>
+                    
+                <cfif #SongDetails.RECORDING_FLAG# eq 'true' || #SongDetails.RECORDING_FLAG#  eq 1>
+                <cfset SongDetails.RECORDING_FLAG = 1>    
+                <cfelse>  
+                 <cfset SongDetails.RECORDING_FLAG = 0>    
+                </cfif> 
+                
+                <cfif #SongDetails.GAME# eq 'true' || #SongDetails.GAME#  eq 1>
+                <cfset SongDetails.GAME = 1>    
+                <cfelse>  
+                 <cfset SongDetails.GAME = 0>    
+                </cfif> 
+
+                <cfif #SongDetails.PUBLISH# eq 'true' || #SongDetails.PUBLISH#  eq 1>
+                    <cfset SongDetails.PUBLISH = 1>    
+                    <cfelse>  
+                     <cfset SongDetails.PUBLISH = 0>    
+                    </cfif> 
+        <cfquery name="edit" datasource="kodaly_canada" >
+              update tbl_Titles
+              set Title = '#SongDetails.TITLE#' ,
+                  Alt_Title_1 = '#SongDetails.ALT_TITLE_1#' ,
+                  Alt_Title_2 =  '#SongDetails.ALT_TITLE_2#'  ,
+                  First_Line_Text = '#SongDetails.FIRST_LINE_TEXT#' ,
+                  Informant = '#SongDetails.INFORMANT#',
+                  Song_Background = '#SongDetails.SONG_BACKGROUND#',
+                    Recording_Flag = #SongDetails.RECORDING_FLAG#,
+                    Game = #SongDetails.GAME#,
+                    stateID = #SongDetails.STATEID# ,
+                  regionID = #SongDetails.REGIONID# ,
+                  ethnicityID =  #SongDetails.ETHNICITYID# ,
+                  Publication = '#SongDetails.PUBLICATION#',
+                  Comments = '#SongDetails.COMMENTS#',
+                  Publish = #SongDetails.PUBLISH#,
+                  IP_Status = #SongDetails.IP_STATUS#,
+                  Child= #SongDetails.CHILD# ,
+                  LOC = #SongDetails.LOC#,
+                  Notation_File_Name = '#SongDetails.NOTATION_FILE_NAME#',
+                   inFinale=#SongDetails.INFINALE# 
+                  where  ID = #SongDetails.ID#   
+                  select 1 
+
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(edit)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>  
+     </cffunction> 
 
 <cffunction name="insertNewSong" access="remote" returntype="any">
 <cfargument name="SongDetails" type="any" required="yes">
