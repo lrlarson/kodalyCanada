@@ -77,7 +77,7 @@
 				<v-tab style="font-size: x-small" ripple key="1" >Analysis</v-tab>
 				<v-tab style="font-size: x-small" ripple key="2" >Rhythms</v-tab>
 				<v-tab style="font-size: x-small" ripple key="9" @click="regionClick" >Region/Prov.</v-tab>
-				<v-tab style="font-size: x-small" ripple key="10" >Communities</v-tab>
+				<v-tab style="font-size: x-small" ripple key="10" @click="communitiesClick" >Communities</v-tab>
 				<v-tab style="font-size: x-small" ripple key="3" @click="pedagogyClick" >Mel. Element</v-tab>
 				<v-tab style="font-size: x-small" ripple key="4" @click="rhythmClick" >Rhythms</v-tab>
 				<v-tab style="font-size: x-small" ripple key="5" @click="motiveClick" >Motives</v-tab>
@@ -377,6 +377,42 @@
 							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="blue" @click="saveRegion" >Save Region</v-btn>
 							<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;margin-left: 10px;"  v-if="editMode" color="green" @click="saveProvinceForTitle" >Add Province</v-btn>
 						</v-row>
+					</v-layout>
+				</v-tab-item>
+				<v-tab-item key="10">
+					<v-layout row>
+						<v-col md3 style="margin-left: 10px;">
+							<v-select
+									v-model="communityObjectForSong.LEVEL_1"
+									label="General Community"
+									:items="generalCommunitiesArray"
+									item-text="LABEL"
+									item-value="DATA"
+									@change="getLevel2Communities(communityObjectForSong.LEVEL_1)"
+							></v-select>
+						</v-col>
+						<v-col md3 style="margin-left: 10px;">
+							<v-select
+									v-model="communityObjectForSong.LEVEL_2"
+									label="Related Community"
+									:items="level2CommunitiesArray"
+									item-text="LABEL"
+									item-value="DATA"
+									@change="getLevel3Communities(communityObjectForSong.LEVEL_2)"
+							></v-select>
+						</v-col>
+						<v-col md3 style="margin-left: 10px;">
+							<v-select
+									v-model="communityObjectForSong.LEVEL_3"
+									label="Related Specific Community"
+									:items="level3CommunitiesArray"
+									item-text="LABEL"
+									item-value="DATA"
+							></v-select>
+						</v-col>
+					</v-layout>
+					<v-layout row class="justify-center">
+						<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="blue" @click="saveRegion" >Save Communities for Song</v-btn>
 					</v-layout>
 				</v-tab-item>
 				<v-tab-item key="3">
@@ -1081,11 +1117,60 @@ export default {
 		generalCommunitiesArray:[],
 		provinceID:0,
 		provincesForTitleArray:[],
+		communityArrayForSong:[],
+		communityObjectForSong:{},
+		level2CommunitiesArray:[],
+		level3CommunitiesArray:[],
 		
 		
 		
 	}),
 	methods:{
+		
+		communitiesClick(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=getGeneralCommunities')
+				.then(response => {
+					vm.generalCommunitiesArray = response.data.results;
+				})
+				.catch(error => {
+					console.log(error);
+				});
+			axios.get(vm.dataURL + 'method=getCommunityArrayForSong&songID=' + vm.songID)
+				.then(response => {
+					vm.communityArrayForSong = response.data.results;
+					vm.communityObjectForSong = vm.communityArrayForSong[0];
+					//alert(vm.communityObjectForSong.LEVEL_1);
+					vm.getLevel2Communities(vm.communityObjectForSong.LEVEL_1);
+					vm.getLevel3Communities(vm.communityObjectForSong.LEVEL_2);
+				})
+				.catch(error => {
+					console.log(error);
+				});
+			
+		},
+		getLevel2Communities(level1ID){
+			let vm = this;
+			//alert('level 1 ' + level1ID);
+			axios.get(vm.dataURL + 'method=getLevel2Community&level1ID=' + level1ID)
+				.then(response => {
+					vm.level2CommunitiesArray = response.data.results;
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		},
+		getLevel3Communities(level2ID){
+			let vm = this;
+			//alert('level 2 ' + level2ID);
+			axios.get(vm.dataURL + 'method=getLevel3Community&level2ID=' + level2ID)
+				.then(response => {
+					vm.level3CommunitiesArray = response.data.results;
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		},
 		handleProvinceTableClick(id){
 			let vm = this;
 			axios.get(vm.dataURL + 'method=deleteStateForTitle&id=' + id)

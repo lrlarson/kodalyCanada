@@ -191,9 +191,25 @@ order by Title
             </cfif>
             order by label
         </cfquery>
-         <cfreturn queryName>   
+          <cfset arrGirls = QueryToStruct(queryName)/>
+       <cfset objectWrapper = structNew()>
+       <cfset objectWrapper.results = #arrGirls#>
+       <cfreturn objectWrapper>     
     </cffunction>
     
+
+    <cffunction name="getCommunityArrayForSong" access="remote" returntype="any" returnformat="JSON">
+        <cfargument name="songID" type="numeric" required="true" >
+        <cfquery name="queryName" datasource="kodaly_canada">
+            select * from tbl_Title_Commuties
+        where songID = #songID#
+        </cfquery>
+        <cfset arrGirls = QueryToStruct(queryName)/>
+       <cfset objectWrapper = structNew()>
+       <cfset objectWrapper.results = #arrGirls#>
+       <cfreturn objectWrapper>
+    </cffunction>
+
     <cffunction name="saveCommunitiesForSong" access="remote" returntype="Any" returnformat="JSON">
     <cfargument name="songID" type="numeric" >
     <cfargument name="level1Comm" type="numeric" >
