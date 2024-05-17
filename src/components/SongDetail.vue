@@ -380,7 +380,7 @@
 					</v-layout>
 				</v-tab-item>
 				<v-tab-item key="10">
-					<v-layout row>
+					<v-layout row v-if="communitiesSaved">
 						<v-col md3 style="margin-left: 10px;">
 							<v-select
 									v-model="communityObjectForSong.LEVEL_1"
@@ -411,8 +411,41 @@
 							></v-select>
 						</v-col>
 					</v-layout>
-					<v-layout row class="justify-center">
-						<v-btn class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  v-if="editMode" color="blue" @click="saveRegion" >Save Communities for Song</v-btn>
+					<v-layout row v-else>
+						<v-col md3 style="margin-left: 10px;">
+							<v-select
+									v-model="selectedLevel1Community"
+									label="General Community"
+									:items="generalCommunitiesArray"
+									item-text="LABEL"
+									item-value="DATA"
+									@change="getLevel2Communities(selectedLevel1Community)"
+							></v-select>
+						</v-col>
+						<v-col md3 style="margin-left: 10px;">
+							<v-select
+									v-model="selectedLevel2Community"
+									label="Related Community"
+									:items="level2CommunitiesArray"
+									item-text="LABEL"
+									item-value="DATA"
+									key="selectedLevel2Community"
+									@change="getLevel3Communities(selectedLevel2Community)"
+							></v-select>
+						</v-col>
+						<v-col md3 style="margin-left: 10px;">
+							<v-select
+									v-model="selectedLevel3Community"
+									label="Related Specific Community"
+									:items="level3CommunitiesArray"
+									item-text="LABEL"
+									item-value="DATA"
+							></v-select>
+						</v-col>
+					</v-layout>
+					<v-layout row class="justify-center" v-if="editMode">
+						<v-btn v-if="communitiesSaved" class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"   color="blue" @click="updateCommunityObject" >Change Communities for Song</v-btn>
+						<v-btn v-else class="justify-center" style="margin-top: 30px; margin-bottom: 20px;"  color="blue" @click="insertNewCommunityObject" > Save New Communities for Song</v-btn>
 					</v-layout>
 				</v-tab-item>
 				<v-tab-item key="3">
@@ -1121,12 +1154,46 @@ export default {
 		communityObjectForSong:{},
 		level2CommunitiesArray:[],
 		level3CommunitiesArray:[],
+		communitiesSaved:false,
+		selectedLevel1Community:0,
+		selectedLevel2Community:0,
+		selectedLevel3Community:0,
 		
 		
 		
 	}),
 	methods:{
 		
+		updateCommunityObject(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=updateCommunityObject&level1ID=' + vm.communityObjectForSong.LEVEL_1+ '&level2ID=' + vm.communityObjectForSong.LEVEL_2 + '&level3ID=' + vm.communityObjectForSong.LEVEL_3 + '&songID=' + vm.songID)
+				.then(response => {
+					console.log(response);
+					vm.communitiesSaved = true;
+					vm.text = 'Community Object Updated';
+					vm.snackbar = true;
+					vm.communitiesClick();
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		},
+		
+		
+		insertNewCommunityObject(){
+			let vm = this;
+			axios.get(vm.dataURL + 'method=insertNewCommunityObject&level1ID=' + vm.selectedLevel1Community + '&level2ID=' + vm.selectedLevel2Community + '&level3ID=' + vm.selectedLevel3Community + '&songID=' + vm.songID)
+				.then(response => {
+					console.log(response);
+					vm.communitiesSaved = true;
+					vm.text = 'Community Object Saved';
+					vm.snackbar = true;
+					vm.communitiesClick();
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		},
 		communitiesClick(){
 			let vm = this;
 			axios.get(vm.dataURL + 'method=getGeneralCommunities')
@@ -1140,9 +1207,12 @@ export default {
 				.then(response => {
 					vm.communityArrayForSong = response.data.results;
 					vm.communityObjectForSong = vm.communityArrayForSong[0];
-					//alert(vm.communityObjectForSong.LEVEL_1);
-					vm.getLevel2Communities(vm.communityObjectForSong.LEVEL_1);
-					vm.getLevel3Communities(vm.communityObjectForSong.LEVEL_2);
+					if (vm.communityObjectForSong.LEVEL_1) {
+						vm.communitiesSaved = true;
+						//alert(vm.communityObjectForSong.LEVEL_1);
+						vm.getLevel2Communities(vm.communityObjectForSong.LEVEL_1);
+						vm.getLevel3Communities(vm.communityObjectForSong.LEVEL_2);
+					}
 				})
 				.catch(error => {
 					console.log(error);
@@ -1227,38 +1297,20 @@ export default {
 		
 		saveNewSong(){
 			let vm = this;
-			// alert(vm.songObject.STATEID )
-			if (!vm.songObject.STATEID){
-				vm.songObject.STATEID = 0;
-			}
-			else{
-				// vm.songObject.STATEID = vm.songOb;
-			}
-			// alert(vm.songObject.REGIONID )
-			if (!vm.songObject.REGIONID ){
-				vm.songObject.REGIONID = 0;
-			}
-			else{
-				// vm.songObject.REGIONID = vm.songObject.REGIONID;
-			}
-			if (!vm.songObject.ETHNICITYID ){
-				vm.songObject.ETHNICITYID = 0;
-			}
-			else{
-				// vm.songObject.ETHNICITYID = vm.songObject.ETHNICITYID;
-			}
+
 			
 			window.$.ajax({
 				type: "post",
 				url: vm.dataURL,
 				dataType: "json",
 				data: {
-					method: "insertSong",
-					songDetails: JSON.stringify(vm.songObject)
+					method: "insertNewSong",
+					SongDetails: JSON.stringify(vm.songObject)
 				},
 				success: function (result) {
-					vm.songID =  result.results[0].COMPUTED_COLUMN_1;
-					// console.log(result.results[0].COMPUTED_COLUMN_1);
+					alert(result.results[0].NEWID);
+					vm.songID =  result.results[0].NEWID;
+					console.log(result.results[0].NEWID);
 					// console.log('song ID' + vm.songID);
 					vm.text = 'New Song Saved'
 					vm.snackbar = true;

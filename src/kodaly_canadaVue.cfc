@@ -103,6 +103,33 @@ order by Title
 <cfreturn 1>
 </cffunction>
 
+<cffunction name="insertNewCommunityObject" access="remote" returntype="any" >
+    <cfargument name="level1ID" type="integer" required="true">
+    <cfargument name="level2ID" type="integer" required="true">
+    <cfargument name="level3ID" type="integer" required="true">
+    <cfargument name="songID" type="integer" required="true">
+    <cfquery name="queryName" datasource="kodaly_canada">
+        insert into tbl_Title_Commuties
+        (songID, level_1, level_2, level_3)
+        values
+        (#songID#, #level1ID#, #level2ID#, #level3ID#)
+        </cfquery>
+        <cfreturn 1>
+</cffunction>
+
+<cffunction name="updateCommunityObject" access="remote" returntype="any" >
+    <cfargument name="level1ID" type="integer" required="true">
+    <cfargument name="level2ID" type="integer" required="true">
+    <cfargument name="level3ID" type="integer" required="true">
+    <cfargument name="songID" type="integer" required="true">
+    <cfquery name="queryName" datasource="kodaly_canada">
+        update tbl_Title_Commuties
+        set level_1 = #level1ID#, level_2 = #level2ID#, level_3 = #level3ID#
+        where songID = #songID#
+        </cfquery>
+        <cfreturn 1>
+</cffunction>
+
      <cffunction name="getTextures" access="remote" returntype="Any" returnformat="JSON">
     <cfquery name="queryName" datasource="kodaly_canada">
         select texture_ID as data, Texture as label from tbl_Texture
@@ -1051,8 +1078,9 @@ Select 1
         <cfreturn objectWrapper>  
      </cffunction> 
 
-<cffunction name="insertNewSong" access="remote" returntype="any">
+<cffunction name="insertNewSong" access="remote" returntype="any" returnformat="JSON">
 <cfargument name="SongDetails" type="any" required="yes">
+<cfset SongDetails = DeserializeJSON(SongDetails)>
 
 <cfif #SongDetails.Analyzed# eq "true">
 <cfset SongDetails.Analyzed = 1>
@@ -1094,16 +1122,7 @@ INSERT INTO dbo.tbl_Titles
           Alt_Title_2 ,
           First_Line_Text ,
           Informant ,
-          scaleID ,
-          NOTE ,
-          tonalCenterID ,
-          meterID ,
-          formID ,
-          stateID ,
-          regionID ,
-          rangeID ,
-          toneSetID ,
-          formAnalysisStr ,
+         
           Analyzed ,
           [Proofed_Flag] ,
           inFinale ,
@@ -1112,11 +1131,8 @@ INSERT INTO dbo.tbl_Titles
           Child, 
           Comments, 
           Publication,
-          Song_Background,
-          subFormType ,
-          commLevel1,
-          commLevel2,
-          commLevel3 
+          Song_Background
+       
           
         )
 VALUES  ( '#SongDetails.Title#' , -- Title - nvarchar(255)
@@ -1124,16 +1140,7 @@ VALUES  ( '#SongDetails.Title#' , -- Title - nvarchar(255)
           '#SongDetails.Alt_Title_2#'  , -- Alt_Title_2 - nvarchar(50)
           '#SongDetails.First_Line_Text#'  , -- First_Line_Text - nvarchar(250)
           '#SongDetails.Informant#' , -- Informant - nvarchar(250)
-           #SongDetails.scaleID#, -- scaleID - int
-         #SongDetails.NOTE#, -- NOTE - int
-          #SongDetails.tonalCenterID# , -- tonalCenterID - int
-          #SongDetails.meterID# , -- meterID - int
-          #SongDetails.formID# , -- formID - int
-          #SongDetails.stateID# , -- stateID - int
-          #SongDetails.regionID#  , -- regionID - int
-          #SongDetails.rangeID#, -- rangeID - int
-         '#SongDetails.toneSetID#'  , -- toneSetID - nvarchar(50)
-          '#SongDetails.formAnalysisStr#'  , -- formAnalysisStr - nvarchar(50)
+ 
          
           #SongDetails.Analyzed# , -- Analyzed - bit
           #SongDetails.Proofed_Flag# , -- [Proofed_Flag] - bit
@@ -1143,15 +1150,15 @@ VALUES  ( '#SongDetails.Title#' , -- Title - nvarchar(255)
          #SongDetails.Child#, -- Child - bit
          '#SongDetails.Comments#',
          '#SongDetails.Publication#',
-         '#SongDetails.Song_Background#',
-         #SongDetails.subFormType#,
-         #SongDetails.commLevel1#,
-         #SongDetails.commLevel2#,
-        #SongDetails.commLevel3#
+         '#SongDetails.Song_Background#'
+        
         )
         SELECT @@IDENTITY as newID
 </cfquery>
-<cfreturn newID>
+<cfset arrGirls = QueryToStruct(newID)/>
+        <cfset objectWrapper = structNew()>
+        <cfset objectWrapper.results = #arrGirls#>
+        <cfreturn objectWrapper>  
 </cffunction>
 
 <cffunction name="updateSong" access="remote" returntype="any">
