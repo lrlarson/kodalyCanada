@@ -36,6 +36,31 @@
         <cfreturn 1>
     </cffunction>
     
+
+ <cffunction name="saveMusicAnalysis" access="remote" returntype="any" returnformat="JSON" >
+        <cfargument name="songDetails" required="true" type="ANY" > 
+        <cfset songDetails = DeserializeJSON(songDetails)> 
+        <cfquery name="music" datasource="kodaly_canada">
+             update tbl_Titles
+             set  tonalCenterID = #SongDetails.TONALCENTERID# ,
+            rangeID = #SongDetails.RANGEID# ,
+            scaleID =  #SongDetails.SCALEID# ,
+            toneSetID = '#SongDetails.TONESETID#' ,
+            Starting_PitchID = #SongDetails.STARTING_PITCHID# ,
+            formTypeID = #SongDetails.FORMTYPEID# ,
+            meterID = #SongDetails.METERID# ,
+            formID = #SongDetails.FORMID#  ,
+            formAnalysisStr = '#SongDetails.FORMANALYSISSTR#' 
+            where ID =  #songDetails.ID# 
+            select 1    
+        </cfquery>
+                <cfset arrGirls = QueryToStruct(music)/>
+                <cfset objectWrapper = structNew()>
+                <cfset objectWrapper.results = #arrGirls#>
+                <cfreturn objectWrapper> 
+    </cffunction>
+
+
         <cffunction name="getSongs" access="remote" returntype="any" returnformat="JSON">
         <cfquery name="queryName" datasource="kodaly_canada">
 select ID, Title, Alt_Title_1, First_Line_Text,Notation_File_Name, Recording_Flag from tbl_Titles
@@ -886,7 +911,7 @@ FROM         [tbl Title Part Work] INNER JOIN
 SELECT [Part Work Key] AS data
       ,[Part Work Sequence Number] as sequence
       ,[Part Work Description] AS label
-  FROM [kodaly_4].[dbo].[tbl Part Work]
+  FROM [tbl Part Work]
   ORDER BY [Part Work Description]
 </cfquery>
 <cfreturn partWorkNames>
@@ -942,7 +967,7 @@ WHERE     ([tbl Title Subject Headings].[Title Key] = #titleKey#)
 <cffunction name="getSubjectHeading" access="remote" returntype="any">
 <cfquery name="subjectHeading" datasource="kodaly_canada">
 SELECT     [Subject Heading Key] AS data, [Subject Heading] AS label
-FROM         kodaly_4.dbo.[tbl Subject Headings]
+FROM         [tbl Subject Headings]
 ORDER BY label
 </cfquery>
 <cfreturn subjectHeading>
@@ -955,7 +980,7 @@ SELECT [id]
       ,[Sub_Subject_Key] as data
       ,[Sub_Subject] AS label
       ,[Subject Heading Key] AS subjectHeadingKey
-  FROM [kodaly_4].[dbo].[Tbl_Sub_Subjects]
+  FROM [Tbl_Sub_Subjects]
   WHERE [Subject Heading Key] = #mainSubject# OR [Sub_Subject_Key] = 29
   order by [Sub_Subject]
 </cfquery>

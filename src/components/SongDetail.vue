@@ -1158,6 +1158,7 @@ export default {
 		selectedLevel1Community:0,
 		selectedLevel2Community:0,
 		selectedLevel3Community:0,
+		musicalAnalysisObject:{},
 		
 		
 		
@@ -1380,49 +1381,48 @@ export default {
 		
 		saveMusicalAnalysis(){
 			let vm = this;
+			
+			vm.musicalAnalysisObject.ID = vm.songID;
 			if (!vm.songObject.FORMID ){
 				vm.songObject.FORMID = 0;
 			}
-			// else{
-			// 	vm.songObject.FORMID = vm.songObject.FORMID.DATA;
-			// }
+			vm.musicalAnalysisObject.FORMID = vm.songObject.FORMID;
+		
 			if (!vm.songObject.METERID ){
 				vm.songObject.METERID = 0;
 			}
-			// else{
-			// 	vm.songObject.METERID = vm.songObject.METERID.DATA;
-			// }
+			vm.musicalAnalysisObject.METERID = vm.songObject.METERID;
+	
 			if (!vm.songObject.RANGEID ){
 				vm.songObject.RANGEID = 0;
 			}
-			// else{
-			// 	vm.songObject.RANGEID = vm.songObject.RANGEID.DATA;
-			// }
+			vm.musicalAnalysisObject.RANGEID = vm.songObject.RANGEID;
+
 			if (!vm.songObject.SCALEID ){
 				vm.songObject.SCALEID = 0;
 			}
-			// else{
-			// 	vm.songObject.SCALEID = vm.songObject.SCALEID.DATA;
-			// }
+			vm.musicalAnalysisObject.SCALEID = vm.songObject.SCALEID;
+
 			if (!vm.songObject.STARTING_PITCHID ){
 				vm.songObject.STARTING_PITCHID = 0;
 			}
-			else{
-				// vm.songObject.STARTING_PITCHID = vm.songObject.STARTING_PITCHID;
-			}
+			vm.musicalAnalysisObject.STARTING_PITCHID = vm.songObject.STARTING_PITCHID;
 			if (!vm.songObject.TONALCENTERID ){
 				vm.songObject.TONALCENTERID = 0;
 			}
-			// else{
-			// 	vm.songObject.TONALCENTERID = vm.songObject.TONALCENTERID.DATA;
-			// }
+			vm.musicalAnalysisObject.TONALCENTERID = vm.songObject.TONALCENTERID;
+
+			vm.musicalAnalysisObject.TONESETID = vm.songObject.TONESETID;
+			vm.musicalAnalysisObject.FORMTYPEID = vm.songObject.FORMTYPEID;
+			vm.musicalAnalysisObject.FORMANALYSISSTR = vm.songObject.FORMANALYSISSTR;
+			
 			window.$.ajax({
 				type: "post",
 				url: vm.dataURL,
 				dataType: "json",
 				data: {
 					method: "saveMusicAnalysis",
-					songDetails: JSON.stringify(vm.songObject)
+					songDetails: JSON.stringify(vm.musicalAnalysisObject)
 				},
 				success: function () {
 					vm.getSongDetails(vm.songID);
