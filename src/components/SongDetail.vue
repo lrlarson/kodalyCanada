@@ -79,7 +79,7 @@
 				<v-tab style="font-size: x-small" ripple key="9" @click="regionClick" >Region/Prov.</v-tab>
 				<v-tab style="font-size: x-small" ripple key="10" @click="communitiesClick" >Communities</v-tab>
 				<v-tab style="font-size: x-small" ripple key="3" @click="pedagogyClick" >Mel. Element</v-tab>
-				<v-tab style="font-size: x-small" ripple key="4" @click="rhythmClick" >Rhythms</v-tab>
+				<v-tab style="font-size: x-small" ripple key="4" @click="rhythmClick" >Rhythm El.</v-tab>
 				<v-tab style="font-size: x-small" ripple key="5" @click="motiveClick" >Motives</v-tab>
 				<v-tab style="font-size: x-small" ripple key="6" @click="getGrades" >Grades</v-tab>
 				<v-tab style="font-size: x-small" ripple key="7" @click="getSongTypesForSong" >Games-Parts</v-tab>
@@ -224,7 +224,7 @@
 
 								<td><v-img src="../assets/ri_ti_ri.gif" max-height="40" max-width="60" ></v-img> </td>
 								<td style="font-size: 20px">ri-ti-ri</td>
-								<td><v-checkbox v-model="songObject.RI_TIM_RI"></v-checkbox></td>
+								<td><v-checkbox v-model="songObject.RI_TI_RI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ti_ta.gif" max-height="50%" max-width="75%" ></v-img> </td>
 								<td style="font-size: 20px">ti-ta</td>
@@ -1774,7 +1774,7 @@ export default {
 		
 		insertMotive(){
 			let vm = this;
-			axios.get(vm.dataURL + 'method=insertMotive&titleID=' + vm.songID + '&motive=' + vm.motiveObject.MOTIVE)
+			axios.get(vm.dataURL + 'method=insertMotiveToSong&titleID=' + vm.songID + '&motive=' + vm.motiveObject.MOTIVE)
 					.then(function (){
 						vm.getMotivesForSong();
 						vm.addMotive = false;
@@ -1840,6 +1840,7 @@ export default {
 		
 		handleMotiveClick(title,motive){
 			let vm = this;
+			alert('edit motive')
 			axios.get(vm.dataURL + 'method=getMotive&titleID=' + title + '&motive=' + motive)
 					.then(function (result){
 						vm.motiveArray = result.data.results;
@@ -1902,7 +1903,7 @@ export default {
 
 		getMotivesForSong(){
 			let vm = this;
-			axios.get(vm.dataURL + 'method=getMotivesForSong&titleKey=' + vm.songID)
+			axios.get(vm.dataURL + 'method=getMotivesForSong&title_ID=' + vm.songID)
 					.then(function (result){
 						vm.motivesForSongArray = result.data.results;
 					})
@@ -1931,7 +1932,6 @@ export default {
 					rhythmicContext: JSON.stringify(vm.rhythmicContextObject)
 				},
 				success: function () {
-					
 					vm.rhythmClick();
 					vm.addRhythymicMode = false;
 					vm.clearRhythmContexts();
