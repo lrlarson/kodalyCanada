@@ -41,7 +41,7 @@
       dark
     >
 			<v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-			<v-toolbar-title>Kodaly Canada Song Database  </v-toolbar-title>
+			<v-toolbar-title>Kodaly Canada Song Database - BETA 1  </v-toolbar-title>
     </v-app-bar>
 
     <v-main>
