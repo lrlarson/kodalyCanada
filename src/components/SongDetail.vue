@@ -184,11 +184,11 @@
 								<td><v-checkbox v-model="songObject.TA"></v-checkbox></td>
 
 								<td><v-img src="../assets/tiri_tiri.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">tiri-tiri</td>
+								<td style="font-size: 20px">tika-tika</td>
 								<td><v-checkbox v-model="songObject.TIRI_TIRI"></v-checkbox></td>
 
 								<td><v-img src="../assets/tiri.gif" max-height="55%" max-width="65%" ></v-img> </td>
-								<td style="font-size: 20px">tiri</td>
+								<td style="font-size: 20px">tika</td>
 								<td><v-checkbox v-model="songObject.TIRI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ti_ti_ti.gif" max-height="40" max-width="60" ></v-img> </td>
@@ -202,11 +202,11 @@
 								<td><v-checkbox v-model="songObject.TI_TI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ti-tiri.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">ti-tiri</td>
+								<td style="font-size: 20px">ti-tika</td>
 								<td><v-checkbox v-model="songObject.TI_TIRI"></v-checkbox></td>
 
 								<td><v-img src="../assets/tim-ri.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">tim-ri</td>
+								<td style="font-size: 20px">tim-ka</td>
 								<td><v-checkbox v-model="songObject.TIM_RI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ta_ti.gif" max-height="40" max-width="60" ></v-img> </td>
@@ -223,7 +223,7 @@
 								<td><v-checkbox v-model="songObject.TIRI_TI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ri_ti_ri.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">ri-ti-ri</td>
+								<td style="font-size: 20px">ta-ti-ta</td>
 								<td><v-checkbox v-model="songObject.RI_TI_RI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ti_ta.gif" max-height="50%" max-width="75%" ></v-img> </td>
@@ -232,19 +232,19 @@
 							</tr>
 							<tr>
 								<td><v-img src="../assets/ta_a.gif" max-height="40%" max-width="60%" ></v-img> </td>
-								<td style="font-size: 20px">ta-a</td>
+								<td style="font-size: 20px">too</td>
 								<td><v-checkbox v-model="songObject.TA_A"></v-checkbox></td>
 
 								<td><v-img src="../assets/syn_co_pa.gif" max-height="58%" max-width="83%" ></v-img> </td>
-								<td style="font-size: 20px">syn-co-pa</td>
+								<td style="font-size: 20px">ti-ta-ti</td>
 								<td><v-checkbox v-model="songObject.TI_TA_TI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ri.gif" max-height="55%" max-width="44%" ></v-img> </td>
-								<td style="font-size: 20px">ri</td>
+								<td style="font-size: 20px">ka</td>
 								<td><v-checkbox v-model="songObject.RI"></v-checkbox></td>
 
 								<td><v-img src="../assets/tim_ri_ti.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">tim-ri-ti</td>
+								<td style="font-size: 20px">tim-ta-ti</td>
 								<td><v-checkbox v-model="songObject.TIM_RI_TI"></v-checkbox></td>
 
 							</tr>
@@ -255,7 +255,7 @@
 								<td><v-checkbox v-model="songObject.HALF_REST"></v-checkbox></td>
 
 								<td><v-img src="../assets/tai_ti.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">tai-ti</td>
+								<td style="font-size: 20px">tam-ti</td>
 								<td><v-checkbox v-model="songObject.TA_TI"></v-checkbox></td>
 
 								<td><v-img src="../assets/tim.gif" max-height="55%" max-width="44%" ></v-img> </td>
@@ -263,33 +263,33 @@
 								<td><v-checkbox v-model="songObject.TIM"></v-checkbox></td>
 
 								<td><v-img src="../assets/ri_tim_ti.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">ri-tim-ri</td>
+								<td style="font-size: 20px">ti-tim-ti</td>
 								<td><v-checkbox v-model="songObject.RI_TIM_RI"></v-checkbox></td>
 
 							</tr>
 
 							<tr>
 								<td><v-img src="../assets/ta-a-a.gif" max-height="40%" max-width="60%" ></v-img> </td>
-								<td style="font-size: 20px">ta-a-a</td>
+								<td style="font-size: 20px">toom</td>
 								<td><v-checkbox v-model="songObject.TA_A_A"></v-checkbox></td>
 
 								<td><v-img src="../assets/ti_tai.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">ti-tai</td>
+								<td style="font-size: 20px">ti-tam</td>
 								<td><v-checkbox v-model="songObject.TI_TAI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ri_tim.gif" max-height="55%" max-width="64%" ></v-img> </td>
-								<td style="font-size: 20px">ri-tim</td>
+								<td style="font-size: 20px">ti-tam</td>
 								<td><v-checkbox v-model="songObject.RI_TIM"></v-checkbox></td>
 
 								<td><v-img src="../assets/ti_tim_ri.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">ti-tim-ri</td>
+								<td style="font-size: 20px">ti-tim-ta</td>
 								<td><v-checkbox v-model="songObject.TI_TIM_RI"></v-checkbox></td>
 
 							</tr>
 
 							<tr>
 								<td><v-img src="../assets/ta-a-a-a.gif" max-height="40%" max-width="60%" ></v-img> </td>
-								<td style="font-size: 20px">ta-a-a-a</td>
+								<td style="font-size: 20px">toe</td>
 								<td><v-checkbox v-model="songObject.TA_A_A_A"></v-checkbox></td>
 
 								<td><v-img src="../assets/eighth_rest.gif" max-height="67%" max-width="51%" ></v-img> </td>
@@ -315,7 +315,7 @@
 								<td><v-checkbox v-model="songObject.TI"></v-checkbox></td>
 
 								<td><v-img src="../assets/tai.gif" max-height="62%" max-width="74%" ></v-img> </td>
-								<td style="font-size: 20px">tai</td>
+								<td style="font-size: 20px">tam</td>
 								<td><v-checkbox v-model="songObject.TAI"></v-checkbox></td>
 
 								<td><v-img src="../assets/tie.gif" max-height="40" max-width="60" ></v-img> </td>
@@ -349,7 +349,7 @@
 							></v-select>
 							<v-select
 									v-model="provinceID"
-									label="Select Provinces"
+									label="Select Provinces/Territories"
 									:items="statesArray"
 									item-text="LABEL"
 									item-value="DATA"
@@ -359,7 +359,7 @@
 							<v-simple-table >
 								<template v-slot:default>
 									<thead style="font-style: italic;">
-										PROVINCES - Click to Delete Province
+										PROVINCES/TERRITORIES - Click to Delete
 									</thead>
 									<tbody>
 										<tr v-for="item in provincesForTitleArray" v-bind:key="item.ID" @click="handleProvinceTableClick(item.ID)">
