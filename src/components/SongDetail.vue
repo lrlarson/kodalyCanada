@@ -219,11 +219,11 @@
 								<td><v-checkbox v-model="songObject.REST"></v-checkbox></td>
 
 								<td><v-img src="../assets/tiri_ti.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">tiri-ti</td>
+								<td style="font-size: 20px">tika-ti</td>
 								<td><v-checkbox v-model="songObject.TIRI_TI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ri_ti_ri.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">ta-ti-ta</td>
+								<td style="font-size: 20px">ka-tika</td>
 								<td><v-checkbox v-model="songObject.RI_TI_RI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ti_ta.gif" max-height="50%" max-width="75%" ></v-img> </td>
@@ -244,7 +244,7 @@
 								<td><v-checkbox v-model="songObject.RI"></v-checkbox></td>
 
 								<td><v-img src="../assets/tim_ri_ti.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">tim-ta-ti</td>
+								<td style="font-size: 20px">tim-ka-ti</td>
 								<td><v-checkbox v-model="songObject.TIM_RI_TI"></v-checkbox></td>
 
 							</tr>
@@ -263,7 +263,7 @@
 								<td><v-checkbox v-model="songObject.TIM"></v-checkbox></td>
 
 								<td><v-img src="../assets/ri_tim_ti.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">ti-tim-ti</td>
+								<td style="font-size: 20px">ti-kum-ti</td>
 								<td><v-checkbox v-model="songObject.RI_TIM_RI"></v-checkbox></td>
 
 							</tr>
@@ -278,11 +278,11 @@
 								<td><v-checkbox v-model="songObject.TI_TAI"></v-checkbox></td>
 
 								<td><v-img src="../assets/ri_tim.gif" max-height="55%" max-width="64%" ></v-img> </td>
-								<td style="font-size: 20px">ti-tam</td>
+								<td style="font-size: 20px">tikum</td>
 								<td><v-checkbox v-model="songObject.RI_TIM"></v-checkbox></td>
 
 								<td><v-img src="../assets/ti_tim_ri.gif" max-height="40" max-width="60" ></v-img> </td>
-								<td style="font-size: 20px">ti-tim-ta</td>
+								<td style="font-size: 20px">tim-ka</td>
 								<td><v-checkbox v-model="songObject.TI_TIM_RI"></v-checkbox></td>
 
 							</tr>
