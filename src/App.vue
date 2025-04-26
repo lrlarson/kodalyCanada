@@ -41,7 +41,7 @@
       dark
     >
 			<v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-			<v-toolbar-title>Kodaly Canada Song Database - BETA 3 - 6/25/24  </v-toolbar-title>
+			<v-toolbar-title>Kodaly Canada Song Database - BETA 4 - 4/26/2025  </v-toolbar-title>
     </v-app-bar>
 
     <v-main>

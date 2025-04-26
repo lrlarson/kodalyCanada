@@ -72,7 +72,7 @@ export default {
 			let vm=this;
 			vm.axios.get(vm.dataURL + 'method=getSongs')
 					.then(function (result){
-						vm.songsArray = result.data.results;
+						vm.songsArray = result.data.RESULTS;
 						for(let i = 0; i < vm.songsArray.length; i++){
 							if (vm.songsArray[i].RECORDING_FLAG == 1){
 								vm.songsArray[i].RECORDING_FLAG = true;
